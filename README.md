@@ -19,12 +19,12 @@
 
 <div align="center">
   <sub>Built with ❤︎ by
-  <a href="https://twitter.com/anderjason1">Jason Anderson</a> and
-  <a href="https://github.com/choojs/choo/graphs/contributors">
-    contributors
+  <a href="https://twitter.com/anderjason1">Jason Anderson</a>
   </a>
 
+<br />
 <img src="docs/images/partialquery.jpg?raw=true" alt="Project image" />
+<br />
 </div>
 
 ## Table of Contents
