@@ -132,7 +132,7 @@ The `conditionPart` object represents only part of a full SQL statement. It can 
 
 Nested queries (like `conditionPart`) and root queries (like `selectQuery`) are the same from a technical perspective. The only difference is that in your usage, you consider one of them the query that you plan to run.
 
-ComposableQuery objects can be flattened into a single SQL string and a single parameter list using the `toFlatQuery` function on the root query.
+ComposableQuery objects can be flattened into a single SQL string and a single parameter list using the `toFlatQuery` function on whichever query you consider the root query.
 
 ```typescript
 // In this example, flatQuery is set to a plain JavaScript object
