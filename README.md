@@ -59,7 +59,7 @@ The `fullQuery` value in the example above is:
 
 ### Tokens
 
-Tokens can be added to a query to be replaced by parameters later. For example, the token `$1` represents the first value in the parameters array. `$2` represents the second value, and so on.
+Tokens can be added to a query to be replaced by parameters later. The token `$1` represents the first value in the parameters array. `$2` represents the second value, and so on.
 
 The query text and parameters are always kept separate, so they can be passed to the database engine separately. This is helpful for preventing SQL injection attacks.
 
@@ -90,6 +90,10 @@ const query = new PartialQuery({
 });
 ```
 
+### Supported SQL
+
+PartialQuery doesn't parse or evaluate the SQL, so you can use any query syntax you like. It's up to you to ensure that the SQL text is valid for the database engine you're using.
+
 ### Supported parameter types
 
 The following parameter types are supported:
@@ -103,37 +107,44 @@ The following parameter types are supported:
 
 ### Composition
 
-PartialQuery queries can be composed together to create more complex queries.
+PartialQuery objects can be composed together to create more complex queries.
 
 In the example below, `selectQuery` includes a nested partial query `conditionPart`:
 
 ```typescript
 import { PartialQuery } from "@anderjason/partialquery";
 
-// this is only part of a SQL query,
+// conditionPart is only a portion of a SQL query,
 // intended to be embedded inside another one
 const conditionPart = new PartialQuery({
   sql: `state = $1 AND type = $2`
   params: ['CA', 'store']
 });
 
-// this is the root query that is meant to
-// be sent to the database engine
+// selectQuery is the root query
 const selectQuery = new PartialQuery({
   sql: `SELECT * FROM locations WHERE $1 AND is_deleted = $2`
   params: [conditionPart, false]
 });
 ```
 
-The `conditionPart` represents only part of a full SQL statement. It can be embedded into the middle of other queries as a parameter. To do this, the selectQuery SQL statement has a token `$1` in it, and `conditionPart` is passed as the first parameter. Queries can be nested any number of levels deep.
+The `conditionPart` object represents only part of a full SQL statement. It can be embedded into the middle of other queries as a parameter. To do this, the selectQuery SQL statement has a token `$1` in it, and `conditionPart` is passed as the first parameter. Queries can be nested any number of levels deep.
 
-Nested queries like this can be flattened into a single SQL string and a single parameter list using the `toPortableQuery` function on the root query:
+Nested queries like this can be flattened into a single SQL string and a single parameter list using the `toPortableQuery` function on the root query.
+
+Nested queries and root queries are the same from a technical perspective. The only difference is that in your usage, you consider one of them the query that you plan to run.
 
 ```typescript
-selectQuery.toPortableQuery();
+// In this example, portableQuery is a plain JavaScript object
+// with two properties: sql and params
+
+// The sql property is a string containing the full SQL statement
+// The params property is an array of parameters
+
+const portableQuery = selectQuery.toPortableQuery();
 ```
 
-This returns the following object, with values that are ready to be sent to a database engine:
+In this example, the `toPortableObject` method returns the following object, with values that are ready to be sent to a database engine:
 
 ```typescript
 {
