@@ -115,7 +115,7 @@ In the example below, `selectQuery` includes a nested partial query `conditionPa
 import { ComposableQuery } from "@anderjason/composablequery";
 
 // conditionPart is only a portion of a SQL query,
-// intended to be embedded inside another one
+// intended to be embedded in another part
 const conditionPart = new ComposableQuery({
   sql: `state = $1 AND type = $2`
   params: ['California', 'Post Office']
@@ -128,7 +128,7 @@ const selectQuery = new ComposableQuery({
 });
 ```
 
-The `conditionPart` object represents only part of a full SQL statement. It can be embedded into the middle of other queries as a parameter. To do this, the `selectQuery` SQL statement has a token `$1` in it, and `conditionPart` is passed as the first parameter. Queries can be nested any number of levels deep.
+The `conditionPart` object represents only part of a full SQL statement. It can be embedded into other queries as a parameter. To do this, the `selectQuery` SQL statement has a token `$1` in it, and `conditionPart` is passed as the first parameter. Queries can be nested any number of levels deep.
 
 Nested queries (like `conditionPart`) and root queries (like `selectQuery`) are the same from a technical perspective. The only difference is that in your usage, you consider one of them the query that you plan to run.
 
