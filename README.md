@@ -4,7 +4,7 @@
   <strong>Composable SQL</strong>
 </div>
 <div align="center">
-  A lightweight library for composing parameterized SQL queries from multiple parts.
+  A lightweight library for composing parameterized SQL queries from nested parts.
 </div>
 
 <br />
@@ -35,14 +35,14 @@
 ```typescript
 import { PartialQuery } from "@anderjason/partialquery";
 
-const condition = new PartialQuery({
+const conditionPart = new PartialQuery({
   sql: `state = $1 AND type = $2`
   params: ['CA', 'store']
 });
 
 const selectQuery = new PartialQuery({
   sql: `SELECT * FROM locations WHERE $1 AND is_deleted = $2`
-  params: [condition, false]
+  params: [conditionPart, false]
 });
 
 const fullQuery = selectQuery.toPortableQuery();
@@ -105,14 +105,14 @@ The following parameter types are supported:
 
 PartialQuery queries can be composed together to create more complex queries.
 
-In the example below, `selectQuery` includes a nested partial query `condition`:
+In the example below, `selectQuery` includes a nested partial query `conditionPart`:
 
 ```typescript
 import { PartialQuery } from "@anderjason/partialquery";
 
 // this is only part of a SQL query,
 // intended to be embedded inside another one
-const condition = new PartialQuery({
+const conditionPart = new PartialQuery({
   sql: `state = $1 AND type = $2`
   params: ['CA', 'store']
 });
@@ -121,13 +121,11 @@ const condition = new PartialQuery({
 // be sent to the database engine
 const selectQuery = new PartialQuery({
   sql: `SELECT * FROM locations WHERE $1 AND is_deleted = $2`
-  params: [condition, false]
+  params: [conditionPart, false]
 });
 ```
 
-The `condition` query represents only part of a full SQL statement. It can be embedded into the middle of other queries as a parameter. To do this, the selectQuery SQL statement has a token `$1` in it, and the `condition` query is passed as the first parameter.
-
-Queries can be nested any number of levels deep.
+The `conditionPart` represents only part of a full SQL statement. It can be embedded into the middle of other queries as a parameter. To do this, the selectQuery SQL statement has a token `$1` in it, and `conditionPart` is passed as the first parameter. Queries can be nested any number of levels deep.
 
 Nested queries like this can be flattened into a single SQL string and a single parameter list using the `toPortableQuery` function on the root query:
 
