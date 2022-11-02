@@ -1,4 +1,5 @@
 import { Test } from "@anderjason/tests";
+import "./ComposableQuery/index.test";
 
 Test.runAll()
   .then(() => {
