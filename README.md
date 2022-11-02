@@ -23,9 +23,9 @@
   <a href="https://github.com/choojs/choo/graphs/contributors">
     contributors
   </a>
-</div>
 
 <img src="docs/images/partialquery.jpg?raw=true" alt="Project image" />
+</div>
 
 ## Table of Contents
 
