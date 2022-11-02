@@ -153,6 +153,8 @@ In this example, the `toPortableObject` method returns the following object, wit
 }
 ```
 
+### Executing queries
+
 To keep this library small and reusable, it's up to the user to decide how to execute the query. For example, you could use the [pg](https://www.npmjs.com/package/pg) library to execute the query:
 
 ```typescript
