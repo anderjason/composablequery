@@ -2,10 +2,10 @@ import { Test } from "@anderjason/tests";
 import { ComposableQuery } from ".";
 
 Test.define("Flatten simple", () => {
-  const query = new ComposableQuery(
-    "SELECT * FROM users WHERE id = $1 AND name = $2",
-    [1, "Fred"]
-  );
+  const query = new ComposableQuery({
+    sql: "SELECT * FROM users WHERE id = $1 AND name = $2",
+    params: [1, "Fred"],
+  });
   const actual = query.toFlatQuery();
   const expected = {
     sql: "SELECT * FROM users WHERE id = $1 AND name = $2",
@@ -21,14 +21,20 @@ Test.define("Flatten simple", () => {
 });
 
 Test.define("Flatten complex", () => {
-  const first = new ComposableQuery("id = $1", [555]);
-  const second = new ComposableQuery("is_deleted = $1", [false]);
-  const innerQuery = new ComposableQuery("($1 AND $2)", [first, second]);
+  const first = new ComposableQuery({ sql: "id = $1", params: [555] });
+  const second = new ComposableQuery({
+    sql: "is_deleted = $1",
+    params: [false],
+  });
+  const innerQuery = new ComposableQuery({
+    sql: "($1 AND $2)",
+    params: [first, second],
+  });
 
-  const query = new ComposableQuery(
-    "SELECT * FROM users WHERE $1 AND name = $2",
-    [innerQuery, "John"]
-  );
+  const query = new ComposableQuery({
+    sql: "SELECT * FROM users WHERE $1 AND name = $2",
+    params: [innerQuery, "John"],
+  });
 
   Test.assert(
     innerQuery instanceof ComposableQuery,
@@ -36,7 +42,6 @@ Test.define("Flatten complex", () => {
   );
 
   const flatQuery = query.toFlatQuery();
-
   Test.assertIsEqual(
     flatQuery.sql,
     "SELECT * FROM users WHERE (id = $1 AND is_deleted = $2) AND name = $3",
@@ -50,15 +55,15 @@ Test.define("Flatten complex", () => {
 });
 
 Test.define("Flatten should throw if the number of params is incorrect", () => {
-  const query = new ComposableQuery(
-    `
+  const query = new ComposableQuery({
+    sql: `
     INSERT INTO selection_groups (cache_key, expires_at_epoch_ms)
     VALUES $1, $2
     ON CONFLICT (cache_key) DO UPDATE
     SET expires_at_epoch_ms = $3
   `,
-    ["cacheKey", 1234567890]
-  );
+    params: ["cacheKey", 1234567890],
+  });
 
   Test.assertThrows(() => {
     query.toFlatQuery();
@@ -66,10 +71,10 @@ Test.define("Flatten should throw if the number of params is incorrect", () => {
 });
 
 Test.define("Flatten should support a token being used multiple times", () => {
-  const query = new ComposableQuery(
-    "INSERT INTO tbl (created_at, expires_at) VALUES ($1, $2) ON CONFLICT DO UPDATE SET expires_at = $2",
-    ["cacheKey", 1234567890]
-  );
+  const query = new ComposableQuery({
+    sql: "INSERT INTO tbl (created_at, expires_at) VALUES ($1, $2) ON CONFLICT DO UPDATE SET expires_at = $2",
+    params: ["cacheKey", 1234567890],
+  });
 
   const flatQuery = query.toFlatQuery();
 
@@ -87,10 +92,10 @@ Test.define("Flatten should support a token being used multiple times", () => {
 });
 
 Test.define("Flatten should dedupe params", () => {
-  const query = new ComposableQuery(
-    "INSERT INTO tbl (created_at, expires_at, num) VALUES ($1, $2, $3) ON CONFLICT DO UPDATE SET expires_at = $4",
-    [1234567890, 1234567890, 1234567890, 555]
-  );
+  const query = new ComposableQuery({
+    sql: "INSERT INTO tbl (created_at, expires_at, num) VALUES ($1, $2, $3) ON CONFLICT DO UPDATE SET expires_at = $4",
+    params: [1234567890, 1234567890, 1234567890, 555],
+  });
 
   const flatQuery = query.toFlatQuery();
 

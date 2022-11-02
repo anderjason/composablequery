@@ -5,9 +5,25 @@ const util_1 = require("@anderjason/util");
 const isToken_1 = require("./_internal/isToken");
 const numberGivenToken_1 = require("./_internal/numberGivenToken");
 class ComposableQuery {
-    constructor(sql, params = []) {
+    constructor(props) {
+        const { sql, params = [] } = props;
         this.sql = sql;
         this.params = params;
+    }
+    static isComposableQuery(value) {
+        if (value == null) {
+            return false;
+        }
+        if (typeof value !== "object") {
+            return false;
+        }
+        return (typeof value.toFlatQuery === "function" && typeof value.sql === "string");
+    }
+    static isEqual(a, b) {
+        if (a == null || b == null) {
+            return false;
+        }
+        return a.toHashCode() === b.toHashCode();
     }
     toFlatQuery(startingOffset = 1) {
         const tokenRegex = /(\$\d+)/;
@@ -27,7 +43,7 @@ class ComposableQuery {
             if ((0, isToken_1.isToken)(sqlPart)) {
                 const tokenNumber = (0, numberGivenToken_1.numberGivenToken)(sqlPart);
                 const param = this.params[tokenNumber - 1];
-                if (param instanceof ComposableQuery) {
+                if (ComposableQuery.isComposableQuery(param)) {
                     const flatQuery = param.toFlatQuery(offset);
                     outputSql.push(flatQuery.sql);
                     outputParams = outputParams.concat(flatQuery.params);

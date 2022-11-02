@@ -3,11 +3,40 @@ import { FlatQuery, FlatQueryParam, ComposableQueryParam } from "./types";
 import { isToken } from "./_internal/isToken";
 import { numberGivenToken } from "./_internal/numberGivenToken";
 
+interface ComposableQueryProps {
+  sql: string;
+  params?: ComposableQueryParam[];
+}
+
 export class ComposableQuery {
   readonly sql: string;
   readonly params: ComposableQueryParam[];
 
-  constructor(sql: string, params: ComposableQueryParam[] = []) {
+  static isComposableQuery(value: any): value is ComposableQuery {
+    if (value == null) {
+      return false;
+    }
+
+    if (typeof value !== "object") {
+      return false;
+    }
+
+    return (
+      typeof value.toFlatQuery === "function" && typeof value.sql === "string"
+    );
+  }
+
+  static isEqual(a: ComposableQuery, b: ComposableQuery): boolean {
+    if (a == null || b == null) {
+      return false;
+    }
+
+    return a.toHashCode() === b.toHashCode();
+  }
+
+  constructor(props: ComposableQueryProps) {
+    const { sql, params = [] } = props;
+
     this.sql = sql;
     this.params = params;
   }
@@ -39,7 +68,7 @@ export class ComposableQuery {
         const tokenNumber = numberGivenToken(sqlPart);
         const param = this.params[tokenNumber - 1];
 
-        if (param instanceof ComposableQuery) {
+        if (ComposableQuery.isComposableQuery(param)) {
           const flatQuery = param.toFlatQuery(offset);
           outputSql.push(flatQuery.sql);
           outputParams = outputParams.concat(flatQuery.params);
