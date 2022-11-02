@@ -1,2 +1,3 @@
 import { ComposableQuery } from "./ComposableQuery";
-export { ComposableQuery };
+import { FlatQuery, FlatQueryParam, ComposableQueryParam } from "./ComposableQuery/types";
+export { ComposableQuery, FlatQuery, FlatQueryParam, ComposableQueryParam };

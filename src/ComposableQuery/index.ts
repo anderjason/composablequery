@@ -1,27 +1,13 @@
 import { StringUtil } from "@anderjason/util";
+import { FlatQuery, FlatQueryParam, ComposableQueryParam } from "./types";
 import { isToken } from "./_internal/isToken";
 import { numberGivenToken } from "./_internal/numberGivenToken";
 
-export type QueryParam =
-  | string
-  | string[]
-  | number
-  | number[]
-  | boolean
-  | ComposableQuery;
-
-export type FlatQueryParam = string | string[] | number | number[] | boolean;
-
-export interface FlatQuery {
-  sql: string;
-  params: FlatQueryParam[];
-}
-
 export class ComposableQuery {
   readonly sql: string;
-  readonly params: QueryParam[];
+  readonly params: ComposableQueryParam[];
 
-  constructor(sql: string, params: QueryParam[] = []) {
+  constructor(sql: string, params: ComposableQueryParam[] = []) {
     this.sql = sql;
     this.params = params;
   }

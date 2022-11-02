@@ -61,7 +61,7 @@ Test.define("Flatten should throw if the number of params is incorrect", () => {
   );
 
   Test.assertThrows(() => {
-    const flatQuery = query.toFlatQuery();
+    query.toFlatQuery();
   }, "Expected to throw");
 });
 
