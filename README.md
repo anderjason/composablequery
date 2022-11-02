@@ -1,15 +1,15 @@
-<h1 style="text-align: center">PartialQuery</h1>
+<h1 align="center">PartialQuery</h1>
 
-<div style="text-align: center">
+<div align="center">
   <strong>Composable SQL</strong>
 </div>
-<div style="text-align: center">
+<div align="center">
   A lightweight library for composing parameterized SQL queries from multiple parts.
 </div>
 
 <br />
 
-<div style="text-align: center">
+<div align="center">
   <!-- Stability -->
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-orange.svg?style=flat-square"
@@ -17,7 +17,7 @@
   </a>
 </div>
 
-<div style="text-align: center">
+<div align="center">
   <sub>Built with ❤︎ by
   <a href="https://twitter.com/anderjason1">Jason Anderson</a> and
   <a href="https://github.com/choojs/choo/graphs/contributors">
@@ -46,9 +46,12 @@ const selectQuery = new PartialQuery({
 });
 
 const fullQuery = selectQuery.toPortableQuery();
+```
 
-/*
-fullQuery = {
+The `fullQuery` value in the example above is:
+
+```typescript
+{
   sql: "SELECT * FROM locations WHERE state = $1 AND type = $2 AND is_deleted = $3",
   params: ['CA', 'store', false]
 }
