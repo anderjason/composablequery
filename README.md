@@ -37,7 +37,7 @@ import { ComposableQuery } from "@anderjason/composablequery";
 
 const conditionPart = new ComposableQuery({
   sql: `state = $1 AND type = $2`
-  params: ['CA', 'store']
+  params: ['California', 'Post Office']
 });
 
 const selectQuery = new ComposableQuery({
@@ -48,12 +48,12 @@ const selectQuery = new ComposableQuery({
 const flatQuery = selectQuery.toFlatQuery();
 ```
 
-The `flatQuery` value in the example above is:
+The `flatQuery` value in the example above is set to:
 
 ```typescript
 {
   sql: "SELECT * FROM locations WHERE state = $1 AND type = $2 AND is_deleted = $3",
-  params: ['CA', 'store', false]
+  params: ['California', 'Post Office', false]
 }
 ```
 
@@ -118,7 +118,7 @@ import { ComposableQuery } from "@anderjason/composablequery";
 // intended to be embedded inside another one
 const conditionPart = new ComposableQuery({
   sql: `state = $1 AND type = $2`
-  params: ['CA', 'store']
+  params: ['California', 'Post Office']
 });
 
 // selectQuery is the root query
@@ -149,7 +149,7 @@ In the code above, the `toFlatQuery` method returns the following object, with v
 ```typescript
 {
   sql: "SELECT * FROM locations WHERE state = $1 AND type = $2 AND is_deleted = $3",
-  params: ['CA', 'store', false]
+  params: ['California', 'Post Office', false]
 }
 ```
 
@@ -165,7 +165,7 @@ const pool = new Pool();
 
 const condition = new ComposableQuery({
   sql: `state = $1 AND type = $2`
-  params: ['CA', 'store']
+  params: ['California', 'Post Office']
 });
 
 const selectQuery = new ComposableQuery({
