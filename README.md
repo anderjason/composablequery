@@ -25,7 +25,7 @@
   </a>
 </div>
 
-<img src="docs/images/partialquery.jpg" alt="Project image" />
+<img src="docs/images/partialquery.jpg?raw=true" alt="Project image" />
 
 ## Table of Contents
 
