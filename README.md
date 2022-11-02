@@ -20,7 +20,7 @@
 <br />
 
 <div align="center">
-<img src="docs/images/partialquery.jpg?raw=true" alt="Project image" />
+<img src="docs/images/partialquery2.jpg?raw=true" alt="Project image" />
 </div>
 
 <br />
@@ -61,8 +61,7 @@ The `fullQuery` value in the example above is:
 
 Tokens can be added to a query to be replaced by parameters later. For example, the token `$1` represents the first value in the parameters array. `$2` represents the second value, and so on.
 
-In the example below, when the query is executed in the database engine, the token `$1` will be  
-replaced with `active`, and the token `$2` will be replaced with `company123`.
+The query text and parameters are always kept separate, so they can be passed to the database engine separately. This is helpful for preventing SQL injection attacks.
 
 ```typescript
 import { PartialQuery } from "@anderjason/partialquery";
@@ -73,9 +72,7 @@ const query = new PartialQuery({
 });
 ```
 
-The query text and parameters are always kept separate, so they can be passed to the database engine separately. This is helpful for preventing SQL injection attacks.
-
-You can reuse the same token multiple times in the same query. For example, the following query uses the token `$1` twice:
+You can reuse the same token multiple times in the same query. The following query uses the token `$1` twice:
 
 ```typescript
 const query = new PartialQuery({
@@ -84,7 +81,7 @@ const query = new PartialQuery({
 });
 ```
 
-The number of unique tokens in a query must match the number of parameters. For example, the following query is invalid because it has two tokens `$1` and `$2` but only one parameter:
+The number of unique tokens in a query must match the number of parameters. The following query is invalid because it has two tokens `$1` and `$2` but only one parameter:
 
 ```typescript
 const query = new PartialQuery({
