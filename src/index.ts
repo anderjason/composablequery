@@ -1,3 +1,3 @@
-import { PartialQuery } from "./PartialQuery";
+import { ComposableQuery } from "./ComposableQuery";
 
-export { PartialQuery };
+export { ComposableQuery };

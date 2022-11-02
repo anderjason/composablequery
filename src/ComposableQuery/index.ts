@@ -8,21 +8,16 @@ export type QueryParam =
   | number
   | number[]
   | boolean
-  | PartialQuery;
+  | ComposableQuery;
 
-export type PortableQueryParam =
-  | string
-  | string[]
-  | number
-  | number[]
-  | boolean;
+export type FlatQueryParam = string | string[] | number | number[] | boolean;
 
-export interface PortableQuery {
+export interface FlatQuery {
   sql: string;
-  params: PortableQueryParam[];
+  params: FlatQueryParam[];
 }
 
-export class PartialQuery {
+export class ComposableQuery {
   readonly sql: string;
   readonly params: QueryParam[];
 
@@ -31,16 +26,7 @@ export class PartialQuery {
     this.params = params;
   }
 
-  log(): void {
-    const obj = this.toPortableQuery();
-
-    console.log({
-      sql: obj.sql,
-      params: obj.params,
-    });
-  }
-
-  toPortableQuery(startingOffset: number = 1): PortableQuery {
+  toFlatQuery(startingOffset: number = 1): FlatQuery {
     const tokenRegex = /(\$\d+)/;
     const sqlParts = this.sql.split(tokenRegex);
 
@@ -58,7 +44,7 @@ export class PartialQuery {
     }
 
     let outputSql: string[] = [];
-    let outputParams: PortableQueryParam[] = [];
+    let outputParams: FlatQueryParam[] = [];
 
     for (const sqlPart of sqlParts) {
       const offset = startingOffset + outputParams.length;
@@ -67,10 +53,10 @@ export class PartialQuery {
         const tokenNumber = numberGivenToken(sqlPart);
         const param = this.params[tokenNumber - 1];
 
-        if (param instanceof PartialQuery) {
-          const flattenedQuery = param.toPortableQuery(offset);
-          outputSql.push(flattenedQuery.sql);
-          outputParams = outputParams.concat(flattenedQuery.params);
+        if (param instanceof ComposableQuery) {
+          const flatQuery = param.toFlatQuery(offset);
+          outputSql.push(flatQuery.sql);
+          outputParams = outputParams.concat(flatQuery.params);
         } else {
           if (tokenIndexByParam.has(param)) {
             const existingTokenIndex = tokenIndexByParam.get(param);
@@ -93,8 +79,8 @@ export class PartialQuery {
   }
 
   toHashCode(): number {
-    const portableQuery = this.toPortableQuery();
-    const str = `${portableQuery.sql},${JSON.stringify(portableQuery.params)}`;
+    const flatQuery = this.toFlatQuery();
+    const str = `${flatQuery.sql},${JSON.stringify(flatQuery.params)}`;
 
     return StringUtil.hashCodeGivenString(str);
   }

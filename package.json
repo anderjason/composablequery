@@ -1,11 +1,11 @@
 {
-  "name": "@anderjason/partialquery",
+  "name": "@anderjason/composablequery",
   "version": "0.1.0",
   "description": "",
   "main": "./dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:anderjason/partialquery.git"
+    "url": "git+ssh://git@github.com:anderjason/composablequery.git"
   },
   "author": "Jason Anderson",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "typescript": "^4.8.4"
   },
   "bugs": {
-    "url": "https://github.com/anderjason/partialquery/issues"
+    "url": "https://github.com/anderjason/composablequery/issues"
   },
-  "homepage": "https://github.com/anderjason/partialquery#readme"
+  "homepage": "https://github.com/anderjason/composablequery#readme"
 }
