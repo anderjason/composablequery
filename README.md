@@ -17,15 +17,13 @@
   </a>
 </div>
 
+<br />
+
 <div align="center">
-  <sub>Built with ❤︎ by
-  <a href="https://twitter.com/anderjason1">Jason Anderson</a>
-  </a>
+<img src="docs/images/partialquery.jpg?raw=true" alt="Project image" />
+</div>
 
 <br />
-<img src="docs/images/partialquery.jpg?raw=true" alt="Project image" />
-<br />
-</div>
 
 ## Table of Contents
 
