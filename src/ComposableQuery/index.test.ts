@@ -80,34 +80,13 @@ Test.define("Flatten should support a token being used multiple times", () => {
 
   Test.assertIsEqual(
     flatQuery.sql,
-    "INSERT INTO tbl (created_at, expires_at) VALUES ($1, $2) ON CONFLICT DO UPDATE SET expires_at = $2",
+    "INSERT INTO tbl (created_at, expires_at) VALUES ($1, $2) ON CONFLICT DO UPDATE SET expires_at = $3",
     "SQL is not equal"
   );
 
   Test.assertIsDeepEqual(
     flatQuery.params,
-    ["cacheKey", 1234567890],
-    "Params are not equal"
-  );
-});
-
-Test.define("Flatten should dedupe params", () => {
-  const query = new ComposableQuery({
-    sql: "INSERT INTO tbl (created_at, expires_at, num) VALUES ($1, $2, $3) ON CONFLICT DO UPDATE SET expires_at = $4",
-    params: [1234567890, 1234567890, 1234567890, 555],
-  });
-
-  const flatQuery = query.toFlatQuery();
-
-  Test.assertIsEqual(
-    flatQuery.sql,
-    "INSERT INTO tbl (created_at, expires_at, num) VALUES ($1, $1, $1) ON CONFLICT DO UPDATE SET expires_at = $2",
-    "SQL is not equal"
-  );
-
-  Test.assertIsDeepEqual(
-    flatQuery.params,
-    [1234567890, 555],
+    ["cacheKey", 1234567890, 1234567890],
     "Params are not equal"
   );
 });

@@ -28,7 +28,6 @@ class ComposableQuery {
     toFlatQuery(startingOffset = 1) {
         const tokenRegex = /(\$\d+)/;
         const sqlParts = this.sql.split(tokenRegex);
-        const tokenIndexByParam = new Map();
         const tokens = this.sql.match(/(\$\d+)/gm);
         if (tokens) {
             const tokenSet = new Set(tokens);
@@ -49,15 +48,8 @@ class ComposableQuery {
                     outputParams = outputParams.concat(flatQuery.params);
                 }
                 else {
-                    if (tokenIndexByParam.has(param)) {
-                        const existingTokenIndex = tokenIndexByParam.get(param);
-                        outputSql.push(`$${existingTokenIndex}`);
-                    }
-                    else {
-                        outputSql.push(`$${offset}`);
-                        outputParams.push(param);
-                        tokenIndexByParam.set(param, offset);
-                    }
+                    outputSql.push(`$${offset}`);
+                    outputParams.push(param);
                 }
             }
             else {
