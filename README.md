@@ -103,6 +103,9 @@ The following parameter types are supported:
 - `number`
 - `number[]`
 - `boolean`
+- `Buffer`
+- `null`
+- `undefined`
 - `ComposableQuery` (see [Composition](#composition) section)
 
 ### Composition

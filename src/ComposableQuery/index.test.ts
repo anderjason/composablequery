@@ -90,3 +90,45 @@ Test.define("Flatten should support a token being used multiple times", () => {
     "Params are not equal"
   );
 });
+
+Test.define("Flatten should support null", () => {
+  const query = new ComposableQuery({
+    sql: "INSERT INTO tbl (created_at, expires_at) VALUES ($1, $2)",
+    params: ["cacheKey", null],
+  });
+
+  const flatQuery = query.toFlatQuery();
+
+  Test.assertIsEqual(
+    flatQuery.sql,
+    "INSERT INTO tbl (created_at, expires_at) VALUES ($1, $2)",
+    "SQL is not equal"
+  );
+
+  Test.assertIsDeepEqual(
+    flatQuery.params,
+    ["cacheKey", null],
+    "Params are not equal"
+  );
+});
+
+Test.define("Flatten should support undefined", () => {
+  const query = new ComposableQuery({
+    sql: "INSERT INTO tbl (created_at, expires_at, rebuild) VALUES ($1, $2, $3)",
+    params: ["cacheKey", undefined, false],
+  });
+
+  const flatQuery = query.toFlatQuery();
+
+  Test.assertIsEqual(
+    flatQuery.sql,
+    "INSERT INTO tbl (created_at, expires_at, rebuild) VALUES ($1, $2, $3)",
+    "SQL is not equal"
+  );
+
+  Test.assertIsDeepEqual(
+    flatQuery.params,
+    ["cacheKey", undefined, false],
+    "Params are not equal"
+  );
+});

@@ -6,7 +6,9 @@ export type FlatQueryParam =
   | number
   | number[]
   | boolean
-  | Buffer;
+  | Buffer
+  | null
+  | undefined;
 
 export type ComposableQueryParam = FlatQueryParam | ComposableQuery;
 
